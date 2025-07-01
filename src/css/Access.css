@@ -1,7 +1,10 @@
 .wrap {
-  width: 600px;
+  width: 550px;
   height: 500px;
   margin-top: 30px;
-  display: flex;
-  justify-content: center;
+  display: auto;
+}
+.space{
+  width: 550px;
+  height: 5%;
 }
