@@ -1,70 +1,70 @@
-# Getting Started with Create React App
+#目次
+<p>1.プロジェクトの概要</p>
+<p>2.プロジェクトの作成経緯</p>
+<p>3.構成</p>
+<p>4.改善課題</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h2>1.プロジェクトの概要</h2>
+<p>react+springbootで予約、自動決済機能を活用したSPA(single-page-Application)であり、このrepositoryは以下フロント枠の箇所のソース管理兼メモとして利用してます。</p>
+<p>現在の進捗としてローカルでの挙動まで確認し、今後2ヶ月の目標としてサイトとして一般的にブラウザで利用できるところまで作成する予定です。</p>
 
-## Available Scripts
+<img width="800" alt="構成" src="https://github.com/user-attachments/assets/312c6f5f-8c8e-4421-9868-f2447734a15f" />
 
-In the project directory, you can run:
+<h2>2.プロジェクトの作成経緯</h2>
+<p>元の題材としてはweb系で何かECサイトをコピーしてみるというところで形にならなかった中で、行きつけのお店が予約時に決済をとるアプリ機能を採用していたが、</p>
+<p>レビューで予約直後の決済はキャンセルできない不満が散見されたので、もし当事者ならどのように改善したかという発想をベースにSPAとして切り出してみただけです。</p>
+<p>上記の構成図みて</p>
+<p>・mqいらなくない？</p>
+<p>・なんでコンテナ分けたの?　1個のコンテナでバッチとして運用すればよくない？</p>
+<p>と疑問を思われると思いますが、全くその通りだと思います。こちらに関してはspring未経験で学習目的なので慣れるために色々機能使いたかっただけです。納品するプロジェクト業務ではちゃんと1つにまとめます。</p>
 
-### `npm start`
+<h2>3.構成</h2>
+<h3>3-1.開発環境</h3>
+<pre>
+| 言語・主にインストールしたlib | バージョン |
+| --------------------- | ---------- |
+| React                 | 19.1.0     |
+| axios                 | 1.10.0     |
+| uuid                  | 11.1.0     |
+| dayjs                 | 1.11.13    |
+| @mui/material         | 7.1.2      |
+| @mui/x-date-pickers   | 8.5.3      |
+| @stripe/stripe-js     | 7.3.1      |
+| @stripe/react-stripe-js| 3.7.0     |
+| @stripe/react-stripe-js| 3.7.0     |
+| @@react-google-maps/api| 2.20.7    |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+</pre>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<h3>3-2.ディレクトリ</h3>
+<pre>
+~/src
+├── App.css
+├── App.js
+├── App.test.js
+├── css(それぞれのコンポーネント用のcss)
+│   ├── Access.css
+│   ├── CardElementForm.css
+│   ├── Home.css
+│   ├── Introduction.css
+│   ├── Menu.css
+│   ├── Order.css
+│   └── Reservation.css
+├── index.css
+├── index.js
+├── logo.svg
+├── reportWebVitals.js
+├── setupTests.js
+└── spa-component(各ビューとAPI情報)
+    ├── Access.tsx
+    ├── CardElementForm.tsx
+    ├── Home.tsx
+    ├── Introduction.tsx
+    ├── Menu.tsx
+    ├── Order.tsx
+    ├── Reservation.tsx
+    └── ResultDialog.tsx
+</pre>
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<h2>4.改善課題</h2>
+<p>1.Accsss.tsxコンポーネント内で使用してるgoogle mapだが、APIキーをenv経由で読ませる実装がうまくいかなかったので、ローカルで暫定直読みの実装にして対応。セキュリティの観点でAPIキーの直読みはナンセンスなので要修正</p>
