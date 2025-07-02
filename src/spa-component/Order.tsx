@@ -37,7 +37,7 @@ const Order = ()=>{
     }
     // APIからメニュー情報読み込み
     useEffect(() => {
-        axios.post('http://localhost:{port}/menu/getMenuList',
+        axios.post(process.env.REACT_APP_LOCAL_MENUGET ?? "",
             {"id": 1},
             {
                 headers:
