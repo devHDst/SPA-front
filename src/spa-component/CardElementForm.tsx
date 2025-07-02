@@ -11,23 +11,29 @@ import ResultDialog from "./ResultDialog.tsx";
 
 type Props = {
     intentId: string;
-    userName: string;
+    email: string;
     amount: number;
     reserveDateTime: dayjs.Dayjs;
     setShowDialog: (showDialog) => void;
 };
 
-const CardElementForm: React.FC<Props> = ({intentId = "", userName = "",amount = 0 ,reserveDateTime = dayjs() ,setShowDialog}) => {
+const CardElementForm: React.FC<Props> = ({intentId = "", email = "",amount = 0 ,reserveDateTime = dayjs() ,setShowDialog}) => {
 
     // 結果表示用パラメータ
     const [ showAPIResult, setShowAPIResult ] = useState(false);
     const [ resultMsg, setResultMsg ] = useState("");
 
     // 全て完了後のcloseメソッド
-    const closeAllModal = ()=>{
-        setShowDialog(false);
+    const closeResultModal = ()=>{
         setShowAPIResult(false);
     }
+
+    // バリデーションチェック
+    const validationCheck = (InputText: string): boolean => {
+        const rule = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        console.log(rule.test(InputText));
+        return rule.test(InputText);
+    };
 
     // 1.決済関連処理
     const stripe = useStripe();
@@ -35,14 +41,19 @@ const CardElementForm: React.FC<Props> = ({intentId = "", userName = "",amount =
 
     const reserveStripe = async(event) => {
         event.preventDefault();
-        
+        if(!validationCheck(email)){
+            setResultMsg("正しい形式でメールアドレスを入力してください");
+            setShowAPIResult(true);
+            return;
+        }
+
         // 顧客識別コード発行
         const waitCode = uuidv4();
         if (stripe && elements) {
             const cardElement = elements.getElement(CardElement);
 
             // 日付登録
-            const dateApiResult = reserveDatetime(userName, waitCode ,reserveDateTime);
+            const dateApiResult = reserveDatetime(email, waitCode ,reserveDateTime);
             console.log(dateApiResult);
             // データがエラーならキャンセル処理を実装
             // if(!dateApiResult) return;
@@ -67,9 +78,9 @@ const CardElementForm: React.FC<Props> = ({intentId = "", userName = "",amount =
     
     // 2.日時情報予約
     //　該当コンテナに予約情報を保存
-    const reserveDatetime = (userName: string, waitCode: String,reserveDate: dayjs.Dayjs) => {
+    const reserveDatetime = (email: string, waitCode: String,reserveDate: dayjs.Dayjs) => {
         const options = {
-            userId :userName,
+            userId :email,
             waitCode : waitCode,
             expDate: reserveDate.format("YYYY-MM-DDTHH:mm:ss"),
             chargePrice: amount,
@@ -90,10 +101,10 @@ const CardElementForm: React.FC<Props> = ({intentId = "", userName = "",amount =
         }
         return false;
     }
-    // 3.stripeコンテナに決済情報を保存
+
     function createPaymentMethodAPI(paymentMethodId, waitCode){
         axios.post('http://localhost:{port}/Stripe/register',{
-            userId : userName,
+            userId : email,
             intentId : intentId,
             paymentMethod : paymentMethodId,
             waitCode: waitCode,
@@ -117,7 +128,7 @@ const CardElementForm: React.FC<Props> = ({intentId = "", userName = "",amount =
                 <Button variant="contained" onClick={ reserveStripe }>注文する</Button>
                 <Button variant="contained" onClick={() => setShowDialog(false)}>閉じる</Button>
             </Stack>
-            <ResultDialog showAPIResult = { showAPIResult } message = { resultMsg } closeAllModal = {() => closeAllModal()}/>
+            <ResultDialog showAPIResult = { showAPIResult } message = { resultMsg } closeResultModal = {() => closeResultModal()}/>
         </div>
     );
 }

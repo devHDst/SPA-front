@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../css/Reservation.css";
 import { Button, Dialog, DialogTitle, TextField, Card } from "@mui/material";
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
@@ -16,12 +16,20 @@ import { v4 as uuidv4} from "uuid";
 
 const Reservation = (amount = 0) =>{
 
-    const [ userName, setUsername] = useState("");
+    const [ email, setEmail] = useState("");
     const [ reserveDate, setReservaDate] = useState(dayjs());
     const [ options, setOptions ] = useState([]);
     const [ showDialog, setShowDialog ] = useState(false);
     const [ showAPIResult, setShowAPIResult ] = useState(false);
     const [ resultMsg, setResultMsg ] = useState("");
+
+    // バリデーションチェック
+    const validationCheck = (InputText: string): boolean => {
+        const rule = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        console.log(rule.test(InputText));
+        return rule.test(InputText);
+    };
+
 
     // 1.基本パラメータ
     // モーダルチェック
@@ -31,8 +39,7 @@ const Reservation = (amount = 0) =>{
     const closeModal = () => {
         setShowDialog(false);
     }
-    const closeAllModal = () =>{
-        setShowDialog(false);
+    const closeResultModal = () =>{
         setShowAPIResult(false);
     }
     // 日付監視
@@ -40,8 +47,8 @@ const Reservation = (amount = 0) =>{
         setReservaDate(dateTime);
     }
     // 名前変更
-    const changeUserName = (userName) => {
-        setUsername(userName);
+    const changeEmail = (email) => {
+        setEmail(email);
     }
     // stripe設定
     const getOptions = (data) =>{
@@ -65,9 +72,15 @@ const Reservation = (amount = 0) =>{
     );
 
     // 日時のみ予約の登録API
-    const reserveDatetime = (userName: string, reserveDate: dayjs.Dayjs) => {
+    const reserveDatetime = (email: string, reserveDate: dayjs.Dayjs) => {
+
+        if(!validationCheck(email)){
+            setResultMsg("正しい形式でメールを入力してください");
+            setShowAPIResult(true);
+            return;
+        }
         const options = {
-            userId :userName,
+            userId :email,
             waitCode : uuidv4(),
             expDate: reserveDate.format("YYYY-MM-DDTHH:mm:ss"),
             chargePrice: amount.charge,
@@ -124,7 +137,7 @@ const Reservation = (amount = 0) =>{
             <Elements stripe={stripePromise} options={stripeOptions}>
                 <CardElementForm
                     amount = {amount.charge}
-                    userName = {userName}
+                    email = {email}
                     intentId = {options.intentId} 
                     reserveDateTime = {reserveDate} 
                     setShowDialog = {setShowDialog} />
@@ -143,10 +156,11 @@ const Reservation = (amount = 0) =>{
                 <Card sx={{ width: 500, margin: 2, overflow: "auto", boxShadow: "none" }}> 
                     {/* calendarまでは標準入力フォーム */}
                     <TextField 
-                        sx = {{marginTop:1,marginBottom:1}}
-                        className = "userNameForm" 
+                        sx = {{ marginTop:1,marginBottom:1 }}
+                        type = { "email" }
+                        className = "emailForm" 
                         label = "メールアドレスを入力してください"
-                        onChange={(event) =>  changeUserName(event.target.value)}
+                        onChange={(event) =>  changeEmail(event.target.value)}
                         />
                     { calendar }
 
@@ -156,14 +170,19 @@ const Reservation = (amount = 0) =>{
                     //　日時のみ登録呼び出し
                     <div >
                         <Stack direction="row" justifyContent="end" spacing={2}>
-                            <Button variant="contained" onClick ={() => reserveDatetime(userName, reserveDate)}> 予約する</Button>
+                            <Button variant="contained" onClick ={() => reserveDatetime(email, reserveDate)}> 予約する</Button>
                             <Button variant="contained" onClick = {closeModal}>閉じる</Button>
                         </Stack>
                     </div> 
                     }
                 </Card>
             </Dialog>
-            <ResultDialog showAPIResult = {showAPIResult} message = {resultMsg} closeAllModal = {() => closeAllModal()}/>
+            <ResultDialog 
+                showAPIResult = {showAPIResult} 
+                message = {resultMsg} 
+                closeResultModal = {() => closeResultModal()}
+                validationCheck = {() => validationCheck("")}
+                />
         </div>
     );
 }

@@ -5,16 +5,16 @@ import { Dialog,DialogTitle, Card, Stack, Button } from "@mui/material";
 type Props = {
     message: String;
     showAPIResult: boolean;
-    closeAllModal:() => void;
+    closeResultModal:() => void;
 }
 
-const ResultDialog:React.FC<Props> = ({ showAPIResult = true, message = "", closeAllModal}) => {
+const ResultDialog:React.FC<Props> = ({ showAPIResult = true, message = "", closeResultModal}) => {
 
 
     // 結果表示ダイアログ
     return ( 
         <div>
-            <Dialog open={showAPIResult} onClose={closeAllModal}>
+            <Dialog open={showAPIResult} onClose={closeResultModal}>
                 <DialogTitle>
                     送信結果
                     <Card sx={{ margin:2, boxShadow:"none" }}>
@@ -22,7 +22,7 @@ const ResultDialog:React.FC<Props> = ({ showAPIResult = true, message = "", clos
                     </Card>
                     <div>
                         <Stack direction="row" justifyContent="end" spacing={2}>
-                            <Button variant="contained" onClick = {closeAllModal}>戻る</Button>
+                            <Button variant="contained" onClick = {closeResultModal}>戻る</Button>
                         </Stack>
                     </div>
                 </DialogTitle>
