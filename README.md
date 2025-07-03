@@ -7,9 +7,25 @@
 <p>4.改善課題</p>
 
 <h2>0.操作方法</h2>
+<h3>ローカル</h3>
 <p>ローカルのでの運用方法はルートディレクトリでnpm startを実行してください</p>
-<p>注意としてstripe_api_keyとgoogle_map_keyは個別の値を差し込むこと(サーバー上での運用手順は追記予定)</p>
+<p>注意としてstripe_api_keyとgoogle_map_keyは個別の値を差し込むこと</p>
 
+<h3>検証環境サーバーへの立ちあげ</h3>
+<pre>
+色々会ってgcpで立ち上げ中。随時作業更新予定
+1.javascript実行環境の導入(初回のみ)
+Nodeをインストール
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt install -y nodejs
+
+2.nginxの導入
+インストール
+sudo apt install nginx -y
+起動
+sudo service nginx start
+(この段階で※http://{外部IP}で検証可能、GCEのhttp、https許可をonにしておくこと)
+</pre>
 
 <h2>1.プロジェクトの概要</h2>
 <p>react+springbootで予約、自動決済機能を活用したSPA(single-page-Application)であり、このrepositoryは以下フロント枠の箇所のソース管理兼メモとして利用してます。</p>
