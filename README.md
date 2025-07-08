@@ -13,18 +13,22 @@
 
 <h3>検証環境サーバーへの立ちあげ</h3>
 <pre>
-色々会ってgcpで立ち上げ中。随時作業更新予定
-1.javascript実行環境の導入(初回のみ)
-Nodeをインストール
-curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-sudo apt install -y nodejs
+gcp経由でデプロイ完了 <a href="https://spa-r-front.com">一般公開済み(従量課金制のため、非使用時はoff)</a>
+1.ローカルでプロジェクトルートディレクトリに移動しビルド
+npm run build
 
-2.nginxの導入
-インストール
-sudo apt install nginx -y
-起動
-sudo service nginx start
-(この段階で※http://{外部IP}で検証可能、GCEのhttp、https許可をonにしておくこと)
+2.以下コマンドに各設定値を用いでgcp環境にデプロイ
+gcloud compute scp --project "<GCPのプロジェクト名>" --zone "<GCEインスタンスのゾーン(リージョン)>" --recurse build/ <GCEのインスタンス名>:./view
+
+3.gceのデプロイ先コンテナにssh接続
+gcloud compute ssh --zone "<GCEインスタンスのゾーン(リージョン)>"  <GCEのインスタンス名> --project "<GCPのプロジェクト名>"
+
+4.作業ディレクトリに移動
+cd /var/www/
+
+5.nginxですでにルートパスをビルドファイルにしていしているので以下コマンドでビルドファイルをルートディレクトリに移動
+cp -r /home/{username}/view/build/ ./html
+
 </pre>
 
 <h2>1.プロジェクトの概要</h2>

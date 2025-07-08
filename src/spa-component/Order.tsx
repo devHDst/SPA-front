@@ -49,6 +49,8 @@ const Order = ()=>{
             }
         ).then(res =>{
             setMenuList(res.data);
+        }).catch(err => {
+            console.error("メニュー情報の取得に失敗しました", err);
         });
     },[]);
 
