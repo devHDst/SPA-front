@@ -87,7 +87,7 @@ const Reservation = (amount = 0) =>{
             // (店舗管理機能は未実装のため暫定対応)
             shopId:1
         }
-        const apiResult = axios.post(process.env.REACT_APP_LOCAL_RESERVE_REGIST ?? "",options);
+        const apiResult = axios.post(process.env.REACT_APP_DEV_RESERVE_REGIST ?? "",options);
         if(apiResult){
             apiResult.then(res => {
                 setResultMsg(res.data.message);
@@ -103,7 +103,7 @@ const Reservation = (amount = 0) =>{
     const stripePromise = loadStripe(process.env.REACT_APP_STRIPEKEY ?? "");
     useEffect(() => {
         if(amount.charge > 0 ){
-            axios.post(process.env.REACT_APP_LOCAL_STRIPE_SET ?? "",
+            axios.post(process.env.REACT_APP_DEV_STRIPE_SET ?? "",
                 {
                     "amount": amount.charge,
                     "currency": 'jpy'

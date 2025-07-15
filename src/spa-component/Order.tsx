@@ -37,7 +37,7 @@ const Order = ()=>{
     }
     // APIからメニュー情報読み込み
     useEffect(() => {
-        axios.post(process.env.REACT_APP_LOCAL_MENUGET ?? "",
+        axios.post(process.env.REACT_APP_DEV_MENUGET ?? "",
             {"id": 1},
             {
                 headers:
