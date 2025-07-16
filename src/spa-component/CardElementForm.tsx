@@ -103,7 +103,7 @@ const CardElementForm: React.FC<Props> = ({intentId = "", email = "",amount = 0 
     }
 
     function createPaymentMethodAPI(paymentMethodId, waitCode){
-        axios.post(process.env.REACT_APP_LOCAL_STRIPE_REGIST ?? "",{
+        axios.post(process.env.REACT_APP_DEV_STRIPE_REGIST ?? "",{
             userId : email,
             intentId : intentId,
             paymentMethod : paymentMethodId,
