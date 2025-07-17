@@ -87,7 +87,7 @@ const CardElementForm: React.FC<Props> = ({intentId = "", email = "",amount = 0 
             // (店舗管理機能は未実装のため暫定対応)
             shopId:1
         }
-        const apiResult = axios.post(process.env.REACT_APP_LOCAL_RESERVE_REGIST ?? "",options);
+        const apiResult = axios.post(process.env.REACT_APP_DEV_RESERVE_REGIST ?? "",options);
         if(apiResult){
             apiResult.then(result => {
                 console.log(result.data);
